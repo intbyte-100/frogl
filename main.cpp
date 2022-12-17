@@ -2,12 +2,11 @@
 #include "vm/util/fbc_buffer.h"
 #include "vm/util/const_table.h"
 #include "vm/lambda.h"
+#include "vm/compiler/parser/parser.h"
+#include "vm/compiler/parser/string_source.h"
 
 
-
-
-int main() {
-
+void vm_test(){
     frogl::const_table const_table(0);
 
 
@@ -22,6 +21,18 @@ int main() {
 
 
     std::cout << sum(1000,-7) << "\n";
+}
+
+int main() {
+    std::string code = "func main() {"
+                       "    let a = 10"
+                       "    print(\"hello world\")"
+                       "} ";
+
+    frogl::parser parser;
+    frogl::string_source source(code);
+
+    parser.parse(source);
 
     return 0;
 }
