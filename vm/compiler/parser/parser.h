@@ -12,7 +12,7 @@ namespace frogl {
 
     public:
 
-        void parse(frogl::source &source);
+        void parse(std::ostream &ostream, frogl::source &source);
 
         std::list<token> *get_tokens(){
             return &tokens;

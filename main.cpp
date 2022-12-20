@@ -32,7 +32,7 @@ int main() {
     frogl::parser parser;
     frogl::string_source source(code);
 
-    parser.parse(source);
+    parser.parse(std::cout, source);
 
     return 0;
 }

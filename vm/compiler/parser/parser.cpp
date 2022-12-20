@@ -2,19 +2,19 @@
 #include "parser.h"
 #include "tokenizer.h"
 
-void frogl::parser::parse(frogl::source &source) {
+void frogl::parser::parse(std::ostream &ostream, frogl::source &source) {
     int line_number = 0;
 
-    frogl::tokenizer tokenizer(" '\"\t\n(){}[]:;!?/\\&%^+*-=><.,");
+    frogl::tokenizer tokenizer;
 
     while (source.has_next()) {
         line_number++;
         std::string line = source.get_line();
         tokenizer.tokenize(line);
 
-        char delim = 0;
 
-        while (tokenizer.has_next()) {
+        while (tokenizer.find_next()) {
+
             if (tokenizer.string_length() == 0) {
                 if (tokenizer.get_delimiter() == '=')
                     std::cout << "= ";

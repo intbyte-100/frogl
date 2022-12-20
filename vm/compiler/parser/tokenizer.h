@@ -4,21 +4,23 @@
 #include <string>
 
 namespace frogl {
+    constexpr int QUOTATION_IS_NOT_CLOSE = 1;
+
     class tokenizer {
-        const char *delimiters;
+        const char *delimiters = " '\t\n(){}[]:;!?/\\&%^+*-=><.,";
         int left_border;
         int right_border;
         std::string *string;
         char delimiter;
-        bool next;
-
+        bool quotation_is_open;
+        int status = 0;
     public:
-        tokenizer(const char *delimiters);
 
-        char get_delimiter();
-        bool has_next();
+        char get_delimiter() const;
+        int get_status() const;
+        bool find_next();
         std::string get_next();
-        int string_length();
+        int string_length() const;
         char tokenize(std::string &string);
     };
 }
