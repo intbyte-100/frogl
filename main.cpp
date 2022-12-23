@@ -2,8 +2,9 @@
 #include "vm/util/fbc_buffer.h"
 #include "vm/util/const_table.h"
 #include "vm/lambda.h"
-#include "vm/compiler/parser/parser.h"
-#include "vm/compiler/parser/string_source.h"
+#include "compiler/parser/parser.h"
+#include "compiler/string_source.h"
+#include "compiler/parser/sliced_string.h"
 
 
 void vm_test(){
@@ -24,15 +25,16 @@ void vm_test(){
 }
 
 int main() {
-    std::string code = "func main() {"
-                       "    let a = 10"
-                       "    print(\"hello world\")"
-                       "} ";
+
+    std::string code = "let a = 203 + 2\"\n"
+                       "var c = a + 33\"\n";
+
 
     frogl::parser parser;
-    frogl::string_source source(code);
+    frogl::string_source source(&code);
 
-    parser.parse(std::cout, source);
+    parser.parse(&std::cout, &source);
+    //auto tokens = parser.get_tokens();
 
     return 0;
 }

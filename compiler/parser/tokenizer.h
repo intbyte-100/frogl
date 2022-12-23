@@ -4,7 +4,7 @@
 #include <string>
 
 namespace frogl {
-    constexpr int QUOTATION_IS_NOT_CLOSE = 1;
+    constexpr int QUOTATION_IS_NOT_CLOSED = 1;
 
     class tokenizer {
         const char *delimiters = " '\t\n(){}[]:;!?/\\&%^+*-=><.,";

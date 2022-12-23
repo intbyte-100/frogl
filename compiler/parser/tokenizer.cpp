@@ -6,6 +6,8 @@ char frogl::tokenizer::tokenize(std::string &string) {
     this->string = &string;
     left_border = 0;
     right_border = -1;
+    status = 0;
+    quotation_is_open = false;
 }
 
 bool frogl::tokenizer::find_next() {
@@ -52,7 +54,7 @@ bool frogl::tokenizer::find_next() {
     }
 
     if (quotation_is_open)
-        status = QUOTATION_IS_NOT_CLOSE;
+        status = QUOTATION_IS_NOT_CLOSED;
 
     delimiter = '\0';
     return false;

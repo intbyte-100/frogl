@@ -5,16 +5,24 @@
 namespace frogl {
 
     enum class token_type {
+        NAME,
         LITERAL,
-        EXPRESSION,
-        EXPRESSION_OPERATOR,
         VARIABLE,
-        CONST
+        CONST,
+        BRACE_OPEN,
+        BRACE_CLOSE,
+        BEGIN,
+        END,
+        PLUS,
+        MINUS,
+        EQUALS,
+        INTEGER
     };
 
     class token_data {
         void* value;
 
+    public:
         template<typename T>
         inline void set_value(T val){
             value = (void* ) val;
