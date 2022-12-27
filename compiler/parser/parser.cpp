@@ -1,17 +1,10 @@
 #include <iostream>
 #include "parser.h"
 #include "tokenizer.h"
+#include "context.h"
 
 
-struct parser_context {
-public:
-    int line{};
-    std::string file_name;
-    std::ostream *error_stream{};
-    bool compilation_is_failed = false;
-};
-
-inline bool is_integer(std::string &str){
+inline bool is_integer(frogl::sliced_string &str){
     int i = 0;
     if (str[0] == '-')
         i++;
@@ -23,12 +16,19 @@ inline bool is_integer(std::string &str){
     return true;
 }
 
-inline void error(parser_context &context){
-    if (!context.compilation_is_failed) {
-        *context.error_stream << "COMPILATION FAILED:\n";
-        context.compilation_is_failed = true;
+
+inline void error(frogl::compiler_context *context, const std::string& line, int symbol_index){
+    if (!context->compilation_is_failed) {
+        *context->error_stream << "COMPILATION FAILED:\n";
+        context->compilation_is_failed = true;
     }
-    *context.error_stream << "  at " << context.file_name << " (line " << context.line << "):\n";
+
+    *context->error_stream << "at " << context->file_name << " (line " << context->line << "):\n\t" << line << "\n\t";
+
+    for (int i = 0; i < symbol_index; ++i)
+        *context->error_stream << ' ';
+
+    *context->error_stream << "^\n";
 }
 
 
@@ -37,21 +37,22 @@ void frogl::parser::parse(std::ostream *error_stream, frogl::source *source) {
 
     frogl::tokenizer tokenizer;
 
-    parser_context context;
-    context.file_name = "main.frogl";
+    compiler_context context;
+    context.file_name = source->name();
     context.error_stream = error_stream;
 
-    while (source->has_next()) {
+    while (source->find_line()) {
+        context.current_symbol_index = 0;
         line_number++;
-        std::string line = source->get_line();
+        auto line = source->get_line();
         tokenizer.tokenize(line);
 
         context.line = line_number;
 
 
 
-        while (tokenizer.find_next()) {
-            auto token = tokenizer.get_next();
+        while (tokenizer.find_token()) {
+            auto token = tokenizer.get_token();
 
             bool zero_size_token = tokenizer.string_length() == 0;
 
@@ -97,18 +98,21 @@ void frogl::parser::parse(std::ostream *error_stream, frogl::source *source) {
                     new_token->type = token_type::VARIABLE;
                 else if (is_integer(token))
                     new_token->type = token_type::INTEGER;
-                else {
+                else if (!(token[0] >= '0' && token[0] <= '9')){
                     new_token->type = token_type::NAME;
-                    new_token->value.set_value(new std::string(token));
+                    new_token->value.set_value(token.to_string_pointer());
+                } else {
+                    int symbol_index = token.c_str() - line.c_str() + token.size() / 2;
+                    error(&context, line.to_string(), symbol_index);
+                    *error_stream << "Invalid syntax: Unexpected token \"" << token.to_string() << "\"\n\n";
                 }
             }
         }
 
 
         if (tokenizer.get_status() == QUOTATION_IS_NOT_CLOSED) {
-            error(context);
-            *error_stream << "\t" << line << "\n\n";
-            *error_stream << "Invalid syntax: Quotation mark is not closed";
+            error(&context, line.to_string(), tokenizer.quotation_opened_index);
+            *error_stream << "Invalid syntax: Quotation mark is not closed\n\n";
         }
 
     }

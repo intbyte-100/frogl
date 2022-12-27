@@ -10,11 +10,19 @@ namespace frogl {
         int string_size;
 
     public:
+
+        inline sliced_string() = default;
+
         inline char operator [](int index){
             return string[index];
         }
 
         inline sliced_string(std::string *source, int position, int size){
+            string = &source->c_str()[position];
+            this->string_size = size;
+        }
+
+        inline sliced_string(sliced_string *source, int position, int size){
             string = &source->c_str()[position];
             this->string_size = size;
         }
@@ -38,6 +46,10 @@ namespace frogl {
 
         inline bool operator ==(const std::string& str){
             return operator==(&str);
+        }
+
+        inline int size(){
+            return string_size;
         }
     };
 }

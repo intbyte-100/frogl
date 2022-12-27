@@ -2,6 +2,7 @@
 
 
 #include <string>
+#include "../sliced_string.h"
 
 namespace frogl {
     constexpr int QUOTATION_IS_NOT_CLOSED = 1;
@@ -10,18 +11,21 @@ namespace frogl {
         const char *delimiters = " '\t\n(){}[]:;!?/\\&%^+*-=><.,";
         int left_border;
         int right_border;
-        std::string *string;
+        frogl::sliced_string *string;
         char delimiter;
         bool quotation_is_open;
+
+
         int status = 0;
     public:
+        int quotation_opened_index;
 
         char get_delimiter() const;
         int get_status() const;
-        bool find_next();
-        std::string get_next();
+        bool find_token();
+        frogl::sliced_string get_token();
         int string_length() const;
-        char tokenize(std::string &string);
+        char tokenize(frogl::sliced_string &string);
     };
 }
 

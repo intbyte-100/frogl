@@ -15,4 +15,4 @@ add_executable(frogl main.cpp
         compiler/source.cpp compiler/source.h
         compiler/string_source.cpp compiler/string_source.h
         compiler/parser/tokenizer.cpp compiler/parser/tokenizer.h
-        compiler/parser/sliced_string.h)
+        compiler/sliced_string.h)

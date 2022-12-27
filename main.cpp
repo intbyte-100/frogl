@@ -4,7 +4,7 @@
 #include "vm/lambda.h"
 #include "compiler/parser/parser.h"
 #include "compiler/string_source.h"
-#include "compiler/parser/sliced_string.h"
+#include "compiler/sliced_string.h"
 
 
 void vm_test(){
@@ -27,14 +27,15 @@ void vm_test(){
 int main() {
 
     std::string code = "let a = 203 + 2\"\n"
-                       "var c = a + 33\"\n";
+                       "var c = 1ddfdswf + 33";
 
 
     frogl::parser parser;
-    frogl::string_source source(&code);
+    frogl::string_source source(&code, "test.frogl");
+
 
     parser.parse(&std::cout, &source);
-    //auto tokens = parser.get_tokens();
+    auto tokens = parser.get_tokens();
 
     return 0;
 }

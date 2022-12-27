@@ -2,19 +2,20 @@
 
 
 
-char frogl::tokenizer::tokenize(std::string &string) {
+char frogl::tokenizer::tokenize(frogl::sliced_string &string) {
     this->string = &string;
     left_border = 0;
     right_border = -1;
     status = 0;
     quotation_is_open = false;
+    quotation_opened_index = 0;
 }
 
-bool frogl::tokenizer::find_next() {
+bool frogl::tokenizer::find_token() {
 
     const char *str = string->c_str();
 
-    for (int i = right_border + 1; string != nullptr && i < string->size() + 1; i++) {
+    for (int i = right_border + 1; i < string->size() + 1; i++) {
 
         const char* delim = delimiters;
 
@@ -32,6 +33,7 @@ bool frogl::tokenizer::find_next() {
             }
             left_border = i + 1;
             quotation_is_open = true;
+            quotation_opened_index = i;
         }
 
 
@@ -40,7 +42,7 @@ bool frogl::tokenizer::find_next() {
 
         //find other tokens by the delimiters
         while (delim[0] != '\0') {
-            if (delim[0] == str[i] || str[i] == 0){
+            if (delim[0] == str[i] || i == string->size() - 1){
 
                 left_border = right_border + 1;
                 right_border = i;
@@ -60,8 +62,8 @@ bool frogl::tokenizer::find_next() {
     return false;
 }
 
-std::string frogl::tokenizer::get_next() {
-    return string->substr(left_border, right_border - left_border);
+frogl::sliced_string frogl::tokenizer::get_token() {
+    return {string, left_border, right_border - left_border};
 }
 
 char frogl::tokenizer::get_delimiter() const {
