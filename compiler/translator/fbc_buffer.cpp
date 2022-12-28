@@ -1,6 +1,7 @@
 #include "fbc_buffer.h"
+#include "opcodes.h"
 
-void frogl::fbc_buffer::three_argument_opcode(frogl::opcodes opcode, frogl::byte a, frogl::byte b, frogl::byte c) {
+void frogl::fbc_buffer::three_argument_opcode(opcodes opcode, frogl::byte a, frogl::byte b, frogl::byte c) {
     code.resize(code.size() + 4);
     byte *instruction = &code[code.size() - 4];
     instruction[0] = static_cast<byte>(opcode);
@@ -9,7 +10,7 @@ void frogl::fbc_buffer::three_argument_opcode(frogl::opcodes opcode, frogl::byte
     instruction[3] = c;
 }
 
-void frogl::fbc_buffer::two_argument_opcode(frogl::opcodes opcode, frogl::byte a, frogl::byte b) {
+void frogl::fbc_buffer::two_argument_opcode(opcodes opcode, frogl::byte a, frogl::byte b) {
     code.resize(code.size() + 3);
     byte *instruction = &code[code.size() - 3];
     instruction[0] = static_cast<byte>(opcode);

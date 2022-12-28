@@ -1,5 +1,5 @@
 #include <iostream>
-#include "vm/util/fbc_buffer.h"
+#include "compiler/translator/fbc_buffer.h"
 #include "vm/util/const_table.h"
 #include "vm/lambda.h"
 #include "compiler/parser/parser.h"
