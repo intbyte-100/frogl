@@ -2,7 +2,7 @@
 
 
 #include <list>
-#include "token.h"
+#include "../token.h"
 #include "../source.h"
 
 namespace frogl {

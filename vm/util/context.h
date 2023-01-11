@@ -1,6 +1,6 @@
 #pragma once
 
-#include "const_table.h"
+#include "../../compiler/translator/const_table.h"
 #include "retval_args_buffer.h"
 
 namespace frogl {

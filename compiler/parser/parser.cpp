@@ -51,12 +51,12 @@ void frogl::parser::parse(std::ostream *error_stream, frogl::source *source) {
 
 
 
-        while (tokenizer.find_token()) {
+        while (tokenizer.has_next()) {
             auto token = tokenizer.get_token();
 
             bool zero_size_token = tokenizer.string_length() == 0;
 
-            if (zero_size_token && tokenizer.get_delimiter() == ' ')
+            if (zero_size_token && tokenizer.get_token_type() == ' ')
                 continue;
 
             auto new_token = new frogl::token();
@@ -64,7 +64,7 @@ void frogl::parser::parse(std::ostream *error_stream, frogl::source *source) {
 
 
             if (zero_size_token) {
-                switch (tokenizer.get_delimiter()) {
+                switch (tokenizer.get_token_type()) {
                     case '(':
                         new_token->type = token_type::BRACE_OPEN;
                         break;

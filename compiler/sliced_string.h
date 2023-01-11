@@ -10,8 +10,15 @@ namespace frogl {
         int string_size;
 
     public:
-
         inline sliced_string() = default;
+
+        static inline sliced_string empty()
+        {
+            sliced_string string;
+            string.string = nullptr;
+            string.string_size = 0;
+            return string;
+        }
 
         inline char operator [](int index){
             return string[index];

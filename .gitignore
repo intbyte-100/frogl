@@ -13,3 +13,4 @@ _deps
 cmake-build-release
 cmake-build-relwithdebinfo
 .idea
+build-frogl-Desktop-Debug

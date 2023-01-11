@@ -10,7 +10,7 @@ inline T get_table_value(const frogl::context *context, unsigned char address) {
 }
 
 template<typename T>
-inline void write_value_to_table(frogl::context *context, unsigned short address, T value) {
+inline void write_value_to_table(frogl::context *context, unsigned char address, T value) {
     *((T *) &context->table[address * sizeof(T)]) = value;
 }
 

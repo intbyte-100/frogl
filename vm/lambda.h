@@ -2,7 +2,7 @@
 
 #include <utility>
 #include "vm.h"
-#include "util/const_table.h"
+#include "../compiler/translator/const_table.h"
 
 namespace frogl {
 
@@ -32,7 +32,7 @@ namespace frogl {
             return retval;
         }
 
-        inline R operator ()(T&&... args){
+        inline R operator ()(T... args){
             return execute(&args...);
         }
     };
